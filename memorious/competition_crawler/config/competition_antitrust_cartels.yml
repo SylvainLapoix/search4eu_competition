@@ -1,0 +1,41 @@
+name: competition_1
+
+description: 'a scraper for Antitrusts/Cartels cases'
+
+# schedule: weekly
+pipeline:
+
+  init:
+    method: sequence
+    params:
+      start: 40394
+      step: -1
+      stop : 40000
+      #stop : 28841
+    handle:
+      pass: seed
+
+  seed:
+    method: seed
+    params:
+      url: https://ec.europa.eu/competition/elojade/isef/case_details.cfm?proc_code=1_%(number)s
+    handle:
+      pass: fetch
+
+  fetch:
+    method: fetch
+    handle:
+      pass: debug
+
+  # parse:
+  #   method: parse
+  #   params:
+  #     meta:
+  #       title: '//p/span/strong/'
+  #       policy: '//h2'
+  #   handle:
+  #     fetch: fetch
+  #     pass: debug
+  
+  debug:
+    method: debug
