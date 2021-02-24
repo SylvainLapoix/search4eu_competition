@@ -38,4 +38,4 @@ pipeline:
   #     pass: debug
   
   debug:
-    method: debug
+    method: inspect
