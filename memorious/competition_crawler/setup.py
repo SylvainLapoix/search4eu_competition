@@ -12,5 +12,7 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=["memorious", "datafreeze"],
-    entry_points={"memorious.plugins": ["competition_crawler = competition_crawler:init"]},
+    entry_points={
+        "memorious.plugins": ["competition_crawler = competition_crawler:init"]
+    },
 )
