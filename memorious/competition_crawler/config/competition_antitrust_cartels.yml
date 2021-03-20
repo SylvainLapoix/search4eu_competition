@@ -32,6 +32,26 @@ pipeline:
           - mime_group: documents
           - mime_group: web
     handle:
+      pass: clean
+
+  clean:
+    # clean HTML before storing : get rid of menu bars etc
+    method: clean_html
+    params:
+      remove_paths:
+        # header and menu bars
+        - '//div[@id="header"]'
+        - '//div[@id="path"]'
+        - '//div[@id="top_menu"]'
+        # left menu
+        - '//td[@id="left_menu"]/table'
+        # footer of the content section
+        - '//center[a[@href="./index.cfm"]]'
+        - '//p[a[@href="/competition/cases/manual.html"]]'
+        # page footer
+        - '//div[div[@id="footer"]]'
+    # TODO : delete td[@id="left_menu"] ?
+    handle:
       pass: parse
 
   parse:
@@ -59,11 +79,11 @@ pipeline:
     handle:
       fetch: fetch
       store: store
+
   
 #  debug:
 #    method: inspect
 
-# TODO clean HTML before storing : get rid of menu bars etc
   store:
     # store the crawled documents to a directory
     method: directory
