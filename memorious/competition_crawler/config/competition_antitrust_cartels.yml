@@ -8,11 +8,12 @@ pipeline:
   init:
     method: sequence
     params:
-      start: 40632
+      # start: 40632
+      start: 37860
       step: -1
-      stop: 40630
+      stop: 37859
       # stop : 40393
-      #stop : 28841
+      # stop : 28841
     handle:
       pass: seed
 
@@ -39,18 +40,27 @@ pipeline:
     method: clean_html
     params:
       remove_paths:
+        # 1. For the EC competition website:
         # header and menu bars
-        - '//div[@id="header"]'
-        - '//div[@id="path"]'
-        - '//div[@id="top_menu"]'
+        - './/div[@id="header"]'
+        - './/div[@id="path"]'
+        - './/div[@id="top_menu"]'
         # left menu
-        - '//td[@id="left_menu"]/table'
+        - './/td[@id="left_menu"]/table'
         # footer of the content section
-        - '//center[a[@href="./index.cfm"]]'
-        - '//p[a[@href="/competition/cases/manual.html"]]'
+        - './/center[a[@href="./index.cfm"]]'
+        - './/p[a[@href="/competition/cases/manual.html"]]'
         # page footer
-        - '//div[div[@id="footer"]]'
-    # TODO : delete td[@id="left_menu"] ?
+        - './/div[div[@id="footer"]]'
+        # TODO : delete td[@id="left_menu"] ?
+        # 2. For the EUR-Lex website
+        - './/header[@id="op-header"]'
+        - './/div[@class="NavSearch"]'
+        - './/div[@class="SiteBreadcrumb"]'
+        - './/div[@class="AffixSidebarWrapper"]'
+        - './/footer[@class="clearfix"]'
+        - './/div[@id="cookie-consent-banner"]'
+        - './/div[@id="myModal"]'
     handle:
       pass: parse
 
@@ -60,27 +70,51 @@ pipeline:
       # only store web and documents ; currently redundant with fetch params
       store:
         # FIXME find a way to avoid storing "procedure doesn't exist" pages
-        or:
-          - mime_group: documents
-          - mime_group: web
+        and:
+          - or:
+              - mime_group: documents
+              - mime_group: web
+          - not:
+              pattern: 'https://ec.europa.eu/competition/elojade/isef/index.cfm.*'
       include_paths:
-        # focus on the content panel ; this conveniently excludes the menu bars (top, left...),
-        # but also avoids following the "new search" link on the "procedure doesn't exist" pages
-        - './/td[@id="content"]'
+        # 1. EC competition website
+        # explicitly select the elements containing our links of interest ;
+        # this conveniently excludes the menu bars (top, left...), but also avoids
+        # following the "new search" link on the "procedure doesn't exist" pages
+        #
+        # 1.1. Case page
+        # 1.1.1. Recurse on links for "Companies" and "Economic Activities"
+        - './/td[@class="ClassTextDetail"]'
+        # 1.1.2. Recurse on links for "Events"
+        # TODO we currently can't define a path that only follows links in certain languages
+        # eg. "en" or "fr" or "Multilingual"
+        - './/table[@class="events"]'
+        #
+        # 1.2. Search results page (eg. after following a link on an Economic Activity)
+        # 1.2.1. Recurse on links to cases
+        - './/td[@class="case"]'
+        #
+        # 2. EUR-Lex : the previous xpath does not exist in its HTML structure, and we
+        # currently abstain from defining any xpath that might be found, because we don't
+        # want the crawler to recurse on the EUR-Lex website ; the page in the default
+        # language (English) is stored as is
+        #
+        # 3. EC Press corner : does not really work because the landing page is empty,
+        # the content is retrieved through javascript calls to an API or something
       meta:
-        title: '//div[@id="BodyContent"]/p/span/strong'
-        policy: '//h2'
-        # TODO parse metadata for companies :
+        title: './/div[@id="BodyContent"]/p/span/strong'
+        policy: './/h2'
+        # TODO
+        # - [ ] parse metadata for companies :
         # <tr><td class="ClassLabelDetail_1">Companies:</td><td class="ClassTextDetail">[. . .]</td></tr>
-        # TODO parse metadata for economic activities :
+        # - [ ] parse metadata for economic activities :
         # <tr><td class="ClassLabelDetail_1">Economic Activity:</td><td class="ClassTextDetail" >[. . .]</td></tr>
-        # TODO parse metadata for events (and fetch linked docs) :
+        # - [ ] parse metadata for events
         # id. except it has structure : <table class="events">
     handle:
       fetch: fetch
       store: store
 
-  
 #  debug:
 #    method: inspect
 
