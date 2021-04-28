@@ -2,7 +2,8 @@ name: competition_1_seq
 
 description: 'a scraper for Antitrusts/Cartels cases with systematically generated case ids'
 
-# schedule: weekly
+stealthy: True
+
 pipeline:
 
   init:
@@ -64,7 +65,8 @@ pipeline:
       pass: parse
 
   parse:
-    method: parse
+    # use our custom method to extract structured metadata from the case details page
+    method: competition.case_details:parse_competition
     params:
       # only store web and documents ; currently redundant with fetch params
       store:
@@ -103,13 +105,6 @@ pipeline:
       meta:
         title: './/div[@id="BodyContent"]/p/span/strong'
         policy: './/h2'
-        # TODO
-        # - [ ] parse metadata for companies :
-        # <tr><td class="ClassLabelDetail_1">Companies:</td><td class="ClassTextDetail">[. . .]</td></tr>
-        # - [ ] parse metadata for economic activities :
-        # <tr><td class="ClassLabelDetail_1">Economic Activity:</td><td class="ClassTextDetail" >[. . .]</td></tr>
-        # - [ ] parse metadata for events
-        # id. except it has structure : <table class="events">
     handle:
       fetch: fetch
       store: store
