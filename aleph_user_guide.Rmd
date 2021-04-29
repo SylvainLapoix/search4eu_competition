@@ -1,0 +1,26 @@
+---
+title: "Untitled"
+author: "Sylvain Lapoix et Mathieu Morey (Datactivist)"
+date: "28/04/2021"
+output: word_document
+---
+
+# 
+
+# Memorious
+
+## Setup
+
+## Creating crawlers
+
+## Running crawlers
+
+## Exploring the data
+
+# Aleph
+
+## Setup
+
+## Importing documents
+
+## Connecting with Memorious
