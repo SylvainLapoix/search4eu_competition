@@ -87,46 +87,46 @@ The topic and potential was worth the work. So we got to it.
 
 ## Our approach
 
-As usual, the first step was to learn how to navigate the site. Among its particularities, it is made of a different fabric depending on the type of decision you look at : each type (antitrust/cartels, mergers and state aid) displays its content in a different manner. That called for a set of three different crawlers, one for each type. Yeah : even on the same website, you sometime need to custom made the crawler for specific targets. We decided to start with the best organized and most promissing from a journalistic perspective : antitrust and cartels.
+As usual, the first step was to learn how to navigate the site. Among its particularities, it is made of a different fabric depending on the type of decision you look at : each type (antitrust/cartels, mergers and state aid) displays its content in a different manner. That called for a set of three different crawlers, one for each type. Because even on a single website, in order to navigate efficiently, extract clean metadata and follow the right links, you need to customize and tailor the crawler for specific page templates. We decided to start with the best organized and most promising section from a journalistic perspective : antitrust and cartels.
 
-The other problem we had was that the URLs didn't follow a clear pattern : counting down from a very high case number, they skipped hundreds and hundreads of steps. Memorious can handle missing pages, it does it very well, but each page had to be called, downloaded, analyzed ... and that consumed time, energy and storage. So we decided to use another method : bouncing from pages to pages.
+The other problem we had was that the URLs didn't follow a clear pattern : case identifiers are (mostly) numeric but non-consecutive, at least in a given section, leaving very large gaps. Memorious can handle missing pages, it does it very well, but each page had to be called, downloaded, analyzed ... and that consumed time, energy and storage. So we decided to use another method : bouncing from page to page.
 
-As Memorious works a lot by following links, we decided to target those that pointed at lists of cases : the economical sector of the companies involved, the name of the companies, the related cases ... the pages returned by those links were full of other cases, sometimes not sorted in chronological order, allowing us to jump from a 2020 cartel investigation to a 1980 business deal. This "bouncing bot" was able to gather as much as [XXXXXX] documents per hour.
+As Memorious works a lot by following links, we decided to target those that pointed at lists of cases : the economic sector of the companies involved, the name of the companies, the related cases ... the pages returned by those links were full of other cases, sometimes not sorted in chronological order, allowing us to jump from a 2020 cartel investigation to a 1980 business deal. This "bouncing bot" was able to gather as much as [XXXXXX] documents per hour.
 
 All those docs were fed directly to Aleph via the Aleph connect module we learned to use (and love). But it was still missing something : the document came with no metadata. No date, no company name, sector or even category of inquiry (cartel or antitrust). Aleph couldn't use anything to index it the proper way.
 
-So Mathieu digged in the toolbox. So far, we focused on how to use the crawler and their function as they came. There was a lot of useful stuff, improved by other users. But here, we needed an extra layer of code to do what we needed : make Memorious snatch some data about the document in the page that contained the link. Those tables I mentioned earlier had it all : company name, type of case, date of publication ... so, Mathieu made a new series of functions of his own, the "competition" set, that tooks those data and passed them to be stored with the doc.
+So Mathieu digged in the toolbox. So far, we focused on how to use the crawler and its functions as they came. There was a lot of useful stuff, improved by other users. But here, we needed an extra layer of code to do what we needed : make Memorious snatch some data about the document in the page that contained the link. Those tables I mentioned earlier had it all : company name, type of case, date of publication ... so, Mathieu wrote a new series of functions of his own, the "competition" set, that extracts this metadata and passes it to be stored alongside the doc.
 
-We now had the docs but also the right company names, dates and sectors ... those things we missed so much from the original search engine.
+We now had the docs but also the right company names, dates and sectors ... those things we wish the original search engine had.
 
 ## Lessons learned
 
-The first thing we realised here is that Aleph can be very user friendly. During our previous attempts, we sweat at building our crawlers and then took hours to analyze the docs they brought us back ... Now we knew out to connect them with each other, we could see the result poping up in real time in the interface !
+The first thing we realised here is that Aleph can be very user friendly. During our previous attempts, we sweat at building our crawlers and then took hours to analyze the docs they brought us back ... Now we knew out to connect aleph and memorious, we could see the result popping up in real time in the graphical interface !
 
 The second important piece of advice : it's OK if it's messy, it will get sorted later. Crawling docs is hard but, if you get all the metadata you need, it will tidy up soon. Hence, following all the leads you have on a page can be a much more efficient approach to a website that trying desperately to reproduce its architecture.
 
-And last but not least : Aleph and Memorious are made for you to improve. We were stuck for weeks in the set of function and pipeline we read about in the documentation, following them with care, binding our brains to fit squares into circles. In the end, building our own tools and inserting them in this framework was easier and liberating. This stack is solid enough to play with as you intent to.
+And last but not least : Aleph and Memorious are made for you to improve. We were stuck for weeks in the set of function and pipeline we read about in the documentation, following them with care, bending our brains to fit squares into circles. In the end, building our own tools derived from the existing functions, and inserting them in this framework was easier and liberating. This stack is solid enough to play with as you intent to.
 
 You'll find technical details on how to connect Memorious to Aleph and index your docs on the fly in a dedicated sub section of the user guide.
 
 # Conclusion and follow up
 
-The Aleph stack made us dream big. From local government decisions to national health regulation or Continent-wide inquiry, we embarqued in a journey into open docs repository that made us realise the potentiel of this tool for journalists (and it's huge !). But the most important lesson we learned is : every step to set up those tools requires a lot of expertise, exploration and time.
+The Aleph stack made us dream big. From local government decisions to national health regulation or Continent-wide inquiry, we embarked on a journey into open document repositories that made us realise the potentiel of this tool for journalists (and it's huge !). But the most important lesson we learned is : every step to set up those tools requires a lot of expertise, exploration and time.
 
 Aleph accomplishes several tasks no single journo (or even newsroom) could achieve by itself :
 
-* searching through complex paths for docs of all sorts ;
+* searching through complex paths for documents of all sorts ;
 * extracting data on the fly, regardless of the format ;
 * using the metadata and content to sort those documents and connect them, inside and across databases.
 
-The skills required to leverage each of those capability are diverse :
+The skills required to leverage each of those capabilities are diverse :
 
-* back end dev to setup the tools and manage the databases ;
-* front end dev to improve the access and build new entry points for the database ;
-* natural langue experts to 
-* and journalists, of course, to assert the relevance, focus on what matters and make use of it.
+* backend dev to setup the tools and manage the databases ;
+* frontend dev to improve the access and build new entry points for users into the database ;
+* natural language processing experts to improve the detection of entities (people, companies, places, etc) ;
+* and journalists, of course, to assert the relevance of the retrieved documents and entities, focus on what matters and make use of it.
 
-The OCCRP team worked hard to make Aleph exist. This organisation needs more of those specialist to help it achieve what it can offer to journalists.
+The OCCRP team worked hard to make Aleph exist. This organisation needs more of those specialists to help it achieve what it can offer to journalists.
 
 ## Next steps
 
