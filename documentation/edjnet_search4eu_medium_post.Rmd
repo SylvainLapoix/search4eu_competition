@@ -17,11 +17,11 @@ We thank and praise the wonderful team at OCCRP who put up this game changing to
 
 # Introduction
 
-Sylvain discovered the Aleph stack at the 2018 Open Government Partneship summit in Tbilisi (Georgia). After a pretty classic presentation on open source investigation, he sat at the table of a digital nomad / dev working at the time for OCCRP in Sarajevo who fliped her laptop open at the black interface he'd become familiar with : a search engine to make requests across several databases covering pretty much every country in the world.
+Sylvain discovered the Aleph stack at the 2018 Open Government Partnership summit in Tbilisi (Georgia). After a pretty classic presentation on open source investigation, he sat at the table of a digital nomad / dev working at the time for OCCRP in Sarajevo who fliped her laptop open at the black interface he'd become familiar with : a search engine to make requests across several databases covering pretty much every country in the world.
 
-In the meantime, Mathieu was working on the best ways to explore public deliberations. Because of legal obligations (for example, the need to use the signed version of a city council's decision to make it valid), most of those were published in image PDF format, making them impossible to search automatically. Hence, this trove was technically locked for any search engine to map the terms the docs contained.
+In the meantime, Mathieu was working on the best ways to explore administrative acts. Because of legal obligations (for example, the need to use the signed version of a city council's decision to make it valid), most of those were published in image-based PDF format, preventing indexing and search. Hence, this trove was technically locked for any search engine to map the terms the docs contained.
 
-Both cooperators for Datactivist, an open data consulting company based in Provence, they were discussing their researches at the Ecomotive café, down the great white stairs of the Saint-Charles station in Marseille. It's only after couple of hours they realised the one could have the key to the safe the other was trying to open. Soon after, Gian-Paolo Accardo came to Sylvain asking if he would join the European Datajournalism Network to help build new tools for investigation. Mathieu and Sylvain offered to adapt and apply the Aleph stack to European topics and sources. The EDJNet board was in. And so the lock-picking season began.
+Both cooperators for Datactivist, an open data consulting company based in Provence, they were discussing their researches at the Ecomotive café, down the great white stairs of the Saint-Charles station in Marseille. It's only after a couple of hours that they realised that one could have the key to the safe the other was trying to open. Soon after, Gian-Paolo Accardo came to Sylvain asking if he would join the European Datajournalism Network to help build new tools for investigation. Mathieu and Sylvain offered to adapt and apply the Aleph stack to European topics and sources. The EDJNet board was in. And so the lock-picking season began.
 
 # Using Aleph to index batch of files
 
@@ -33,7 +33,7 @@ Mathieu and Sylvain already had a batch of files to dig in. They decided to come
 
 ## Our approach
 
-We decided to go slown by using Aleph locally first. It meant installing Aleph, updating it and launching it from our command line to get a local URL that could only be accessed from our computer.
+We decided to go slow by using Aleph locally first. It meant installing Aleph, updating it and launching it from our command line to get a local URL that could only be accessed from our computer.
 
 [...]
 
@@ -45,11 +45,11 @@ To learn how to do it yourself, check the Aleph section of our user guide.
 
 # Using Memorious to extract public documents
 
-We decided to turn to Memorious, the "crawling" tool of the Aleph stack, to retrieve automatically big batches of documents from public websites. In practical terms, Memorious allows you to manage small programs (the crawlers) that will follow a given path to retrieve documents. Those crawlers can be designed with a luxury of functions and parameters following several steps : generating urls, connecting to services, following links, cleaning content, storing documents, etc. Of course, you can also create function of your own in Python (and that's what Mathieu did, on several occasion, to fill the gaps).
+We decided to turn to Memorious, the "crawling" tool of the Aleph stack, to retrieve automatically big batches of documents from public websites. In practical terms, Memorious allows you to manage small programs (the crawlers) that will follow a given path to retrieve documents. Those crawlers can be designed with a luxury of functions and parameters following several steps : generating urls, connecting to services, following links, cleaning content, storing documents, etc. Of course, you can also create function of your own in Python (and that's what Mathieu did, on several occasions, to fill the gaps).
 
-We wanted to harness the power of Memorious to help our colleagues from Civio investigate the decision regarding mental health. And we decided to go a little too big to start : retrieve all the public decision regarding health in national and provincial legislature available online.
+We wanted to harness the power of Memorious to help our colleagues from Civio investigate the sitution of access to mental healthcare. And we aimed too high for a start : retrieve all the public decisions regarding health in the national and provincial legislature available online.
 
-In practice, it meant designing one crawler per website that would generate the url for a decision and follow the architecture of the page to get the cleanest version of the decision to store it. Easier said than done.
+In practice, it meant designing one crawler per website that would generate the url for a decision, retrieve the page, extract from the layout the part of the page on the decision, clean it and store it. Easier said than done.
 
 ## Our approach
 
@@ -57,7 +57,7 @@ We first asked our colleague from Civio where to look for. She provided us with 
 
 We decided to focus first on the official gazettes, as they represented the most promising source of documents with the more variety.
 
-The first difficulty we encountered was that every website had its own structure that reflected into the shape of the URL of the decisions. Place of publication for the deliberation of the Junta of Andalucia, the Boletín Oficial de la Junta de Andalucía (which we ended up calling the Boja) labeled each URL with the year and day of publicaton. But, some days has no decision published. Fortunately, Memorious had this covered : with `init` methods, we could generated the pieces of the URL, adding one day on year down or up, and paste them together to look up for legitimate URL. We had to do it for each website. And, here, we deeply regretted our Spanish classes.
+The first difficulty we encountered was that every website had its own structure that reflected into the shape of the URL of the decisions. Place of publication for the deliberation of the Junta of Andalucia, the Boletín Oficial de la Junta de Andalucía (which we ended up calling the Boja) labeled each URL with the year and day of publicaton. But, some days has no decision published. Fortunately, Memorious had this covered : with `init` methods, we could generate the pieces of the URL, adding one day on year down or up, and paste them together to look up for legitimate URL. We had to do it for each website. And, here, we deeply regretted our Spanish classes.
 
 But this part was the easy one. Once we got to the page itself, we needed to target the right link to follow to get to the docs. [...]
 
@@ -65,23 +65,23 @@ But this part was the easy one. Once we got to the page itself, we needed to tar
 
 Back from this Spanish expedition, we came to understand the importance of mastering every step of the pipeline and the versatility of it : the many options offered by the already existing functions and the level of detail you can specify what you keep and what you stash came as essential tools to use the crawler in website as complex as those.
 
-Second important thing : we would have greatly benefited from a good guide in this mess ! At the crossroads of legal terminology and local parameters, those pages may look as an amusement park for an experienced hiker of the Spanish legislative path. For us, it was a foggy maze of exotic references and strange labels. Knowing your way in a website is not something to learn while programming a crawler : it's a prerequisite.
+Second important thing : we would have greatly benefited from a good guide in this mess ! At the crossroads of legal terminology and local parameters, those pages may look as an amusement park for an experienced hiker of the Spanish legislative path. For us, it was a foggy maze of exotic references and strange labels. **Knowing your way in a website is not something to learn while programming a crawler : it's a prerequisite.**
 
 We compiled the step-by-step process of Memorious installation, crawler setup and running in the Memorious section of our user guide.
 
-# Combining Memorious and Aleph to create a better search engin for public website
+# Combining Memorious and Aleph to create a better search engine for public websites
 
-We now had experienced the digestion process as well as the crawling. Combining the two would allow us to design a custom search engine, updating itself and indexing documents on the fly. Our original intent, in a way. But, for this, we needed two things :
+We now had experienced the ingestion process as well as the crawling. Combining the two would allow us to design a custom document search engine, updating itself and indexing documents on the fly. Our original intent, in a way. But, for this, we needed two things :
 
-1. a source of documents narrow enough to be manageable but diverse enough to cover several topics and countries at once to be useful to as much journalits as possible ;
-2. a source that didn't already feature a search engine or that featured a search engine that didn't fully matched the needs of journalistic methodology (we did'nt want to make a duplicate internal search engine for a public database).
+1. a source of documents narrow enough to be manageable but diverse enough to cover several topics and countries at once to be useful to as many journalists as possible ;
+2. a source that didn't already feature a search engine or that featured a search engine that didn't fully meet the needs of journalistic methodology (we didn't want to make a duplicate internal search engine for a public database).
 
 And so, we decided to use the Aleph stack to improve the search on one of the most European topics of all : competition.
 
-The competition website of the European Commission is a story-rich maze : behind each decision or step of the procedure lies potential cartel, free market rules infrigement and interesting power plays between companies. Covering the all economical sectors and the life span of the EU, it suffers from a search engine that doesn't fit the needs of journalistic research :
+The competition website of the European Commission is a story-rich maze : behind each decision or step of the procedure lies potential cartel, free market rules infrigement and interesting power plays between companies. Covering all the economic sectors and the life span of the EU, it suffers from a search engine that doesn't meet the needs of journalistic research :
 
-* the company names are not indexed as a whole but word by word (see the example bellow) ;
-* worse : the relevant entities mentionned inside the docs (either web page or docx and pdf files) are not indexed. Meaning you can only search in the name of the decisions or documents.
+* the company names are not indexed as a whole but token by token (see the example below) ;
+* worse : the relevant entities mentionned inside the docs (either web page or docx and pdf files) are not indexed. Meaning you can only search for tokens in the title of the decisions or documents.
 
 The topic and potential was worth the work. So we got to it.
 
