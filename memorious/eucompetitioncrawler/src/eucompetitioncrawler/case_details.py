@@ -95,7 +95,11 @@ def parse_case_events(context, data, result):
     # copied and adapted from memorious.operations.parse.parse_html
     context.log.info("Parse case_events: %r", result.url)
 
-    event_list = result.html.xpath('.//table[@class="events"]')[0]
+    event_list = result.html.xpath('.//table[@class="events"]')
+    if not event_list:
+        # surprisingly, some cases have no list of events
+        return
+    event_list = event_list[0]
     base_title = data["title"]
     for row in event_list.xpath('.//tr[td[@class="eventsTdDate"]]'):
         # read row for a case event
