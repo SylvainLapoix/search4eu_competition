@@ -1,8 +1,8 @@
-name: competition_1_seq
+name: competition1_seq
 
-description: 'a scraper for Antitrusts/Cartels cases with systematically generated case ids'
+description: "Antitrusts/Cartels cases with generated sequential case ids"
 
-stealthy: True
+stealthy: False
 
 pipeline:
 
@@ -66,7 +66,7 @@ pipeline:
 
   parse:
     # use our custom method to extract structured metadata from the case details page
-    method: competition.case_details:parse_competition
+    method: eucompetitioncrawler.case_details:parse_competition
     params:
       # only store web and documents ; currently redundant with fetch params
       store:

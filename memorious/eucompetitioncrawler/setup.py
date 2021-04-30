@@ -2,7 +2,7 @@ from datetime import datetime
 from setuptools import setup, find_packages
 
 setup(
-    name="competition_crawler",
+    name="eucompetitioncrawler",
     version=datetime.utcnow().date().isoformat(),
     classifiers=[],
     keywords="",
@@ -12,5 +12,7 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=["memorious", "datafreeze"],
-    entry_points={"memorious.plugins": ["competition = competition:init"]},
+    entry_points={
+        "memorious.plugins": ["eucompetitioncrawler = eucompetitioncrawler:init"]
+    },
 )
