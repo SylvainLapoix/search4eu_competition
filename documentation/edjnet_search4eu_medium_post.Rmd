@@ -8,8 +8,7 @@ output: word_document
 
 This piece details the work of the Datactivist team with the European Data Journalism Network (EDJNet) to master and use Aleph to build a search engine for public documents, regardless of their format or language.
 
-The repo containing the code for the search4eu project is available under CC licence.
-We also assembled a user guide as a wiki for the repo for those who would like to use Aleph for their own crawling and indexation projects.
+The repo containing the code for the search4eu project is available under CC licence. We are also assembling a user guide as a wiki for the repo for those who would like to use Aleph for their own crawling and indexation projects.
 
 We hereby thank the EDJNet team for their trust, support and precious feedback : it was the perfect place to explore this tool.
 
@@ -35,11 +34,23 @@ Mathieu and Sylvain already had a batch of files to dig in. They decided to come
 
 We decided to go slow by using Aleph locally first. It meant installing Aleph, updating it and launching it from our command line to get a local URL that could only be accessed from our computer.
 
-[...]
+Mathieu and Sylvain had already scrpaed documents from their local government : admnistrative registers of the Marseille city council for the first, local assembly reports of Seine-Saint-Denis cities for the second.
+
+The operation is quite simple : you go into the command line and you point Aleph at what you want it to *"digest"*. In this case, a folder containing all the PDF. Not complicated but not very efficient either : without the extra data explaining what was in the file, the only intel Aleph could retrieve was what if could find inside the docs ... and it was pretty messy.
+
+In practice : the Marseille registers were organized in two column format. Letting the Aleph program wonder : where does one decision starts and when does it end ? Where is that date ? Where's the title ? In the end, our batch were digested alright, but the nutrient for investigation was missing badly ...
+
+## The numbers
+Mathieu managed to pipe 281 Marseille administratives registers into Aleph in less than 10 minutes.
+Sylvain made it digest couple of batches of municipal meeting report. For example : the 28 sessions of the city of Aubervilliers were maped in a few minutes.
 
 ## Lessons learned
 
-[...]
+**Aleph is not a file cabinet : it's a search engine. And without meta data, a search engine is as messy as the photo file of your smartphone** (when you haven't sorted it in two or three years).
+
+We thought at first that the information contained in the docs would be sufficient for Aleph to self organize. But it was foolish. Not becaue Aleph is bad at it but because the docs come into so many size and shapes, you can't predict the metadata that will eventually be extracted from it !
+
+We needed metadata. And, to gather some, we needed to go full Aleph stack and dig in Memorious.
 
 To learn how to do it yourself, check the Aleph section of our user guide.
 
@@ -47,19 +58,22 @@ To learn how to do it yourself, check the Aleph section of our user guide.
 
 We decided to turn to Memorious, the "crawling" tool of the Aleph stack, to retrieve automatically big batches of documents from public websites. In practical terms, Memorious allows you to manage small programs (the crawlers) that will follow a given path to retrieve documents. Those crawlers can be designed with a luxury of functions and parameters following several steps : generating urls, connecting to services, following links, cleaning content, storing documents, etc. Of course, you can also create function of your own in Python (and that's what Mathieu did, on several occasions, to fill the gaps).
 
-We wanted to harness the power of Memorious to help our colleagues from Civio investigate the sitution of access to mental healthcare. And we aimed too high for a start : retrieve all the public decisions regarding health in the national and provincial legislature available online.
+We wanted to harness the power of Memorious to help our colleagues from Civio investigate the access to mental healthcare in Europe. And we aimed too high for a start : retrieve all the public decisions regarding health in the Spanish national and provincial legislature available online.
 
 In practice, it meant designing one crawler per website that would generate the url for a decision, retrieve the page, extract from the layout the part of the page on the decision, clean it and store it. Easier said than done.
 
 ## Our approach
 
-We first asked our colleague from Civio where to look for. She provided us with a long list of websites, mainly national and local authorities : Boletin Oficial del Estado (the Spanish Official journal), the equivalent for each autonomous provinces and cities, the Spanish Congress website, etc.
+We first asked our colleague from Civio where to look for. She provided us with a long list of websites, mainly national and local authorities : Boletin Oficial del Estado (the Spanish Official journal), his equivalent each autonomous provinces and cities, the Spanish Congress website, etc.
 
 We decided to focus first on the official gazettes, as they represented the most promising source of documents with the more variety.
 
 The first difficulty we encountered was that every website had its own structure that reflected into the shape of the URL of the decisions. Place of publication for the deliberation of the Junta of Andalucia, the Boletín Oficial de la Junta de Andalucía (which we ended up calling the Boja) labeled each URL with the year and day of publicaton. But, some days has no decision published. Fortunately, Memorious had this covered : with `init` methods, we could generate the pieces of the URL, adding one day on year down or up, and paste them together to look up for legitimate URL. We had to do it for each website. And, here, we deeply regretted our Spanish classes.
 
-But this part was the easy one. Once we got to the page itself, we needed to target the right link to follow to get to the docs. [...]
+But this part was the easy one. Once we got to the page itself, we needed to target the right link to follow to get to the docs. And that's where things go complicated : some of those sites generate their pages as their are asked for (with dynamic pages). We hit a wall several times, trying to point at something that we *"saw"* but that wasn't available at a given url. We couldn't point at a place, we had to trace the path to it from a starting page. Memorious can do that, but you have to become a first class GPS device to get him where you want.
+
+## The numbers
+The main crawler we set up, targeting the Boletin Official del Estado, was able to store 79907 documents in couple of hours of running. We stoped it to save processing time and storage.
 
 ## Lessons learned
 
@@ -99,6 +113,10 @@ So Mathieu digged in the toolbox. So far, we focused on how to use the crawler a
 
 We now had the docs but also the right company names, dates and sectors ... those things we wish the original search engine had.
 
+## The numbers
+The original crawler for "antitrust and cartels" was able to retrieve 2886 documents in 2 hours.
+Our second crawler, only following links from one case page, ended up storing 433 documents in 1 hour.
+
 ## Lessons learned
 
 The first thing we realised here is that Aleph can be very user friendly. During our previous attempts, we sweat at building our crawlers and then took hours to analyze the docs they brought us back ... Now we knew out to connect aleph and memorious, we could see the result popping up in real time in the graphical interface !
@@ -130,3 +148,15 @@ The OCCRP team worked hard to make Aleph exist. This organisation needs more of 
 
 ## Next steps
 
+We have a lot of work ahead of us :
+
+1. documentation : the user guide, some translation to help our folks at OCCRP ;
+2. contribution : Mathieu keeps pushing new improvement to the original repo and we're digging into the feature we think would be useful to add ;
+3. Memorious :
+  * the competition crawler needs to be extended, benefiting from the last updates we made ;
+  * we'd like to get back to our original project and use our new skills and tools to harness Aleph for public doc indexation ;
+4. Aleph :
+  * the competition Aleph would benefit from some improvement in the user experience (PDF rendering, research, etc.) ;
+  * we'd like to work on new features to dig into some of our topics and help fellow journalists use this tool for their own.
+
+All this can't be done just by the two of us. We wait for our EDJNet colleagues to come with fresh ideas and we have some other leads to follow with people from NGOs. And, of course, we will get back and keep contributing to this great project with OCCRP.
